@@ -6,6 +6,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+
+import controllers.ReservasController;
+import model.entities.Reservas;
+
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ImageIcon;
@@ -20,6 +24,9 @@ import javax.swing.ListSelectionModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
 
 @SuppressWarnings("serial")
 public class Buscar extends JFrame {
@@ -33,6 +40,8 @@ public class Buscar extends JFrame {
 	private JLabel labelAtras;
 	private JLabel labelExit;
 	int xMouse, yMouse;
+	
+	private ReservasController reservasController;
 
 	/**
 	 * Launch the application.
@@ -52,8 +61,11 @@ public class Buscar extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * @throws IOException 
+	 * @throws SQLException 
 	 */
-	public Buscar() {
+	public Buscar() throws SQLException, IOException {
+		reservasController = new ReservasController();
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Buscar.class.getResource("/imagenes/lOGO-50PX.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 910, 571);
@@ -93,9 +105,22 @@ public class Buscar extends JFrame {
 		modelo.addColumn("Data Check Out");
 		modelo.addColumn("Valor");
 		modelo.addColumn("Forma de Pago");
+		
 		JScrollPane scroll_table = new JScrollPane(tbReservas);
 		panel.addTab("Reservas", new ImageIcon(Buscar.class.getResource("/imagenes/reservado.png")), scroll_table, null);
 		scroll_table.setVisible(true);
+		
+		List<Reservas> reservas = reservasController.find();
+		
+		for (Reservas reserva : reservas) {
+		    Object[] linha = new Object[5];
+		    linha[0] = reserva.getId();
+		    linha[1] = reserva.getDiaChegada();
+		    linha[2] = reserva.getDiaSaida();
+		    linha[3] = reserva.getValor();
+		    linha[4] = reserva.getFormaPagamento();
+		    modelo.addRow(linha);
+		}
 		
 		
 		tbHospedes = new JTable();
@@ -112,6 +137,9 @@ public class Buscar extends JFrame {
 		JScrollPane scroll_tableHuespedes = new JScrollPane(tbHospedes);
 		panel.addTab("Huéspedes", new ImageIcon(Buscar.class.getResource("/imagenes/pessoas.png")), scroll_tableHuespedes, null);
 		scroll_tableHuespedes.setVisible(true);
+		
+		Object[] linha2 = {"linha1", "linha2"};
+		modeloHospedes.addRow(linha2);
 		
 		JLabel lblNewLabel_2 = new JLabel("");
 		lblNewLabel_2.setIcon(new ImageIcon(Buscar.class.getResource("/imagenes/Ha-100px.png")));

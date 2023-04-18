@@ -310,7 +310,12 @@ public class RegistroHospede extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				
 				if(txtDataN.getDate() != null) {
-					HospedeSalvar();					
+					try {
+						HospedeSalvar();
+					} catch (SQLException | IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}					
 				} else {
 					JOptionPane.showMessageDialog(null, "Deve preencher todos os campos.");
 				}
@@ -345,7 +350,7 @@ public class RegistroHospede extends JFrame {
 		logo.setIcon(new ImageIcon(RegistroHospede.class.getResource("/imagenes/Ha-100px.png")));
 	}
 	
-	private void HospedeSalvar() {
+	private void HospedeSalvar() throws SQLException, IOException {
 		String nome = txtNome.getText();
 		String sobrenome = txtSobrenome.getText();
 		String dataNascimento = ((JTextField) txtDataN.getDateEditor().getUiComponent()).getText();
@@ -365,8 +370,14 @@ public class RegistroHospede extends JFrame {
 		
 		JOptionPane.showMessageDialog(contentPane, "Reserva salva!");
 		
-		Buscar buscar = new Buscar();
-		buscar.setVisible(true);
+		Buscar buscar;
+		try {
+			buscar = new Buscar();
+			buscar.setVisible(true);
+		} catch (SQLException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		dispose();
 	}
 	

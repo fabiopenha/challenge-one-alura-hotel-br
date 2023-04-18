@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import model.ConnectionFactory;
 import model.entities.Reservas;
@@ -38,6 +40,26 @@ public class ReservasDAO {
 		}catch(SQLException e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	public List<Reservas> find() throws SQLException {
+		List<Reservas> reservas = new ArrayList<Reservas>();
+		
+		String sql = "SELECT Id, DataEntrada, DataSaida, Valor, FormaPagamento FROM reservas";
+		
+		try(PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.execute();
+			
+			try(ResultSet rst = pstmt.getResultSet()) {
+				while(rst.next()) {
+					Reservas reserva = 
+							new Reservas(rst.getLong(1),rst.getDate(2) , rst.getDate(3), rst.getString(4), rst.getString(5));
+					
+					reservas.add(reserva);
+				}
+			}
+		}
+		return reservas;
 	}
 	
 }

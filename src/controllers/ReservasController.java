@@ -3,6 +3,7 @@ package controllers;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import model.ConnectionFactory;
@@ -13,6 +14,7 @@ public class ReservasController {
 	
 	private ReservasDAO reservasDAO;
 	
+	
 	public ReservasController() throws SQLException, IOException {
 		Connection connection = new ConnectionFactory().getConecction();
 		this.reservasDAO = new ReservasDAO(connection);
@@ -22,7 +24,11 @@ public class ReservasController {
 		this.reservasDAO.insert(reserva);
 	}
 	
-//	public List<Reservas> find() {
-//		//this.reservasDAO.find(reserva);
-//	}
+	public List<Reservas> find() throws SQLException, IOException {
+		Connection connection = new ConnectionFactory().getConecction();
+		this.reservasDAO = new ReservasDAO(connection);
+		List<Reservas> reservas = reservasDAO.find();
+		
+		return reservas;
+	}
 }

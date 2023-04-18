@@ -95,8 +95,14 @@ public class MenuUsuario extends JFrame {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Buscar buscar = new Buscar();
-				buscar.setVisible(true);
+				Buscar buscar;
+				try {
+					buscar = new Buscar();
+					buscar.setVisible(true);
+				} catch (SQLException | IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				dispose();
 			}
 		});
