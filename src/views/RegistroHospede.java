@@ -7,6 +7,10 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JTextField;
 import java.awt.Color;
 import com.toedter.calendar.JDateChooser;
+
+import controllers.HospedeController;
+import model.Hospede;
+
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
@@ -19,6 +23,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.io.IOException;
+import java.sql.Date;
+import java.sql.SQLException;
 import java.text.Format;
 import java.awt.event.ActionEvent;
 import java.awt.Toolkit;
@@ -38,6 +45,8 @@ public class RegistroHospede extends JFrame {
 	private JLabel labelExit;
 	private JLabel labelAtras;
 	int xMouse, yMouse;
+	
+	private HospedeController hospedeController;
 
 	/**
 	 * Launch the application.
@@ -57,9 +66,15 @@ public class RegistroHospede extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * @param long1 
 	 */
+	
 	public RegistroHospede() {
 		
+	}
+	
+	public RegistroHospede(Long reservaId) throws SQLException, IOException {
+		hospedeController = new HospedeController();
 		setIconImage(Toolkit.getDefaultToolkit().getImage(RegistroHospede.class.getResource("/imagenes/lOGO-50PX.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 910, 634);
@@ -127,9 +142,16 @@ public class RegistroHospede extends JFrame {
 		btnAtras.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				ReservasView reservas = new ReservasView();
-				reservas.setVisible(true);
-				dispose();				
+				ReservasView reservas;
+				try {
+					reservas = new ReservasView();
+					reservas.setVisible(true);
+					dispose();
+				} catch (SQLException | IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+								
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -241,7 +263,9 @@ public class RegistroHospede extends JFrame {
 		txtNreserva.setColumns(10);
 		txtNreserva.setBackground(Color.WHITE);
 		txtNreserva.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+		txtNreserva.setEditable(false);
 		contentPane.add(txtNreserva);
+		txtNreserva.setText(""+ reservaId);
 		
 		JSeparator separator_1_2 = new JSeparator();
 		separator_1_2.setBounds(560, 170, 289, 2);
@@ -284,6 +308,12 @@ public class RegistroHospede extends JFrame {
 		btnsalvar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				
+				if(txtDataN.getDate() != null) {
+					HospedeSalvar();					
+				} else {
+					JOptionPane.showMessageDialog(null, "Deve preencher todos os campos.");
+				}
 			}
 		});
 		btnsalvar.setLayout(null);
@@ -313,6 +343,31 @@ public class RegistroHospede extends JFrame {
 		logo.setBounds(194, 39, 104, 107);
 		panel.add(logo);
 		logo.setIcon(new ImageIcon(RegistroHospede.class.getResource("/imagenes/Ha-100px.png")));
+	}
+	
+	private void HospedeSalvar() {
+		String nome = txtNome.getText();
+		String sobrenome = txtSobrenome.getText();
+		String dataNascimento = ((JTextField) txtDataN.getDateEditor().getUiComponent()).getText();
+		String nacionalidade = txtNacionalidade.getSelectedItem().toString();
+		String telefone = txtTelefone.getText();
+		String reservaId = txtNreserva.getText();
+		
+		Hospede novoHospede = new Hospede(
+				nome, 
+				sobrenome, 
+				Date.valueOf(dataNascimento), 
+				nacionalidade, telefone, 
+				Long.parseLong(reservaId)
+		);
+		
+		hospedeController.salvar(novoHospede);
+		
+		JOptionPane.showMessageDialog(contentPane, "Reserva salva!");
+		
+		Buscar buscar = new Buscar();
+		buscar.setVisible(true);
+		dispose();
 	}
 	
 	//Código que permite movimentar a janela pela tela seguindo a posição de "x" y "y"
