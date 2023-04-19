@@ -24,7 +24,11 @@ public class HospedeController {
 		this.hospedeDAO.insert(hospede);
 	}
 	
-//	public List<Reservas> find() {
-//		//this.reservasDAO.find(reserva);
-//	}
+	public List<Hospede> find(String search) throws SQLException, IOException {
+		Connection connection = new ConnectionFactory().getConecction();
+		this.hospedeDAO = new HospedeDAO(connection);
+		List<Hospede> reservas = hospedeDAO.find(search);
+		
+		return reservas;
+	}
 }

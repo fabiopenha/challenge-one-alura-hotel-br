@@ -7,7 +7,9 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import controllers.HospedeController;
 import controllers.ReservasController;
+import model.Hospede;
 import model.entities.Reservas;
 
 import javax.swing.JTable;
@@ -42,6 +44,7 @@ public class Buscar extends JFrame {
 	int xMouse, yMouse;
 	
 	private ReservasController reservasController;
+	private HospedeController hospedeController;
 
 	/**
 	 * Launch the application.
@@ -66,6 +69,7 @@ public class Buscar extends JFrame {
 	 */
 	public Buscar() throws SQLException, IOException {
 		reservasController = new ReservasController();
+		hospedeController = new HospedeController();
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Buscar.class.getResource("/imagenes/lOGO-50PX.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 910, 571);
@@ -138,8 +142,22 @@ public class Buscar extends JFrame {
 		panel.addTab("Huéspedes", new ImageIcon(Buscar.class.getResource("/imagenes/pessoas.png")), scroll_tableHuespedes, null);
 		scroll_tableHuespedes.setVisible(true);
 		
-		Object[] linha2 = {"linha1", "linha2"};
-		modeloHospedes.addRow(linha2);
+		String search = txtBuscar.getText();
+		
+		List<Hospede> hospedes = hospedeController.find(search);
+		
+		for (Hospede hospede : hospedes) {
+		    Object[] linha = new Object[7];
+		    linha[0] = hospede.getId();
+		    linha[1] = hospede.getNome();
+		    linha[2] = hospede.getSobrenome();
+		    linha[3] = hospede.getDataNascimento();
+		    linha[4] = hospede.getNacionalidade();
+		    linha[5] = hospede.getTelefone();
+		    linha[6] = hospede.getReservaId();
+		    modeloHospedes.addRow(linha);
+		}
+		
 		
 		JLabel lblNewLabel_2 = new JLabel("");
 		lblNewLabel_2.setIcon(new ImageIcon(Buscar.class.getResource("/imagenes/Ha-100px.png")));
@@ -236,7 +254,31 @@ public class Buscar extends JFrame {
 		btnbuscar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-
+				
+				modeloHospedes.setRowCount(0);
+				String search = txtBuscar.getText();
+				
+				List<Hospede> hospedes;
+				try {
+					hospedes = hospedeController.find(search);
+					
+					for (Hospede hospede : hospedes) {
+					    Object[] linha = new Object[7];
+					    linha[0] = hospede.getId();
+					    linha[1] = hospede.getNome();
+					    linha[2] = hospede.getSobrenome();
+					    linha[3] = hospede.getDataNascimento();
+					    linha[4] = hospede.getNacionalidade();
+					    linha[5] = hospede.getTelefone();
+					    linha[6] = hospede.getReservaId();
+					    modeloHospedes.addRow(linha);
+					}
+				} catch (SQLException | IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				
 			}
 		});
 		btnbuscar.setLayout(null);

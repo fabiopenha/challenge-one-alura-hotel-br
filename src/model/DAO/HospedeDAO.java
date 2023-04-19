@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import model.ConnectionFactory;
 import model.Hospede;
@@ -36,6 +38,30 @@ public class HospedeDAO {
 		}catch(SQLException e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	public List<Hospede> find(String search) throws SQLException {
+		List<Hospede> reservas = new ArrayList<Hospede>();
+		
+		List<Hospede> hospedes = new ArrayList<>();
+	    String sql = "SELECT Id, Nome, Sobrenome, DataNascimento, Nacionalidade, Telefone, Id_Reserva "
+	    		+ "FROM hotel_alura.hospedes WHERE Sobrenome LIKE '%"+search+"%' OR Id_Reserva LIKE '%"+search+"%';";
+	     
+		
+		try(PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			
+			pstmt.execute();
+			
+			try(ResultSet rst = pstmt.getResultSet()) {
+				while(rst.next()) {
+					Hospede reserva = 
+							new Hospede(rst.getLong(1), rst.getString(2), rst.getString(3), rst.getDate(4), rst.getString(5), rst.getString(6),rst.getLong(7) );
+					
+					reservas.add(reserva);
+				}
+			}
+		}
+		return reservas;
 	}
 	
 }
