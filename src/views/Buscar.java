@@ -313,10 +313,7 @@ public class Buscar extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
-				
-				
 				int selectedRowIndex = tbHospedes.getSelectedRow();
-				
 				
 				if(selectedRowIndex != -1) {
 					String id = modeloHospedes.getValueAt(selectedRowIndex, 0).toString();
@@ -327,11 +324,26 @@ public class Buscar extends JFrame {
 					String telefone = modeloHospedes.getValueAt(selectedRowIndex, 5).toString();
 					String reservaId = modeloHospedes.getValueAt(selectedRowIndex, 6).toString();
 					
-					
-					System.out.println(id +" "+ nome + " "+sobrenome +" "+ dataNascimento +" "+ nacionalidade +" "+ telefone +" "+ reservaId);
-					
 					Long newId = Long.parseLong(id);
-					System.out.println("Novo ID: "+newId);
+					Long newreservaId = Long.parseLong(reservaId);
+					
+					try {
+						
+						if(!id.trim().isEmpty() && !nome.trim().isEmpty() && !sobrenome.trim().isEmpty() && 
+								!dataNascimento.trim().isEmpty() && !nacionalidade.trim().isEmpty() && !telefone.trim().isEmpty() && 
+								!reservaId.trim().isEmpty()) {
+							
+							Hospede hospede = new Hospede(newId, nome, sobrenome, java.sql.Date.valueOf(dataNascimento), nacionalidade, telefone, newreservaId);
+							hospedeController.update(hospede);
+							JOptionPane.showMessageDialog(contentPane, "hospede atualizado!");
+						} else {
+							JOptionPane.showMessageDialog(null, "Não é permitido atualizar campos vazios.!","Erro", JOptionPane.ERROR_MESSAGE);
+						}
+						
+					} catch (SQLException | IOException e1) {
+						JOptionPane.showMessageDialog(null, "Ocorreu um erro ao atualizar!","Erro", JOptionPane.ERROR_MESSAGE);
+					}
+					
 				}
 				
 				int selectedRowIndexRereservas = tbReservas.getSelectedRow();
@@ -347,7 +359,6 @@ public class Buscar extends JFrame {
 					try {
 						
 						if(!id.trim().isEmpty() && !diaChegada.trim().isEmpty() && !diaSaida.trim().isEmpty() && !valor.trim().isEmpty() && !formaPagamento.trim().isEmpty()) {
-							java.sql.Date.valueOf(diaChegada);
 							Reservas reserva = new Reservas(newId, java.sql.Date.valueOf(diaChegada), java.sql.Date.valueOf(diaSaida), valor, formaPagamento);
 							reservasController.update(reserva);
 							JOptionPane.showMessageDialog(contentPane, "Reserva atualizada!");
