@@ -33,4 +33,9 @@ public class ReservasController {
 		Connection connection = new ConnectionFactory().getConecction();
 		this.reservasDAO.update(reserva);
 	}
+	
+	public void delete(Reservas reserva) throws SQLException, IOException {
+		Connection connection = new ConnectionFactory().getConecction();
+		this.reservasDAO.delete(reserva);
+	}
 }

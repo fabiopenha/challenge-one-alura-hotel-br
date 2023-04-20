@@ -29,10 +29,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.io.IOException;
-import java.sql.Date;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 @SuppressWarnings("serial")
@@ -50,8 +47,6 @@ public class Buscar extends JFrame {
 	
 	private ReservasController reservasController;
 	private HospedeController hospedeController;
-	
-	private SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
 
 	/**
 	 * Launch the application.
@@ -398,7 +393,83 @@ public class Buscar extends JFrame {
 		lblExcluir.setBounds(0, 0, 122, 35);
 		btnDeletar.add(lblExcluir);
 		setResizable(false);
+		
+		btnDeletar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				//code here	
+				
+				int selectedRowIndex = tbHospedes.getSelectedRow();
+				
+				if(selectedRowIndex != -1) {
+					String id = modeloHospedes.getValueAt(selectedRowIndex, 0).toString();
+					Long newId = Long.parseLong(id);
+					
+					modeloHospedes.setRowCount(0);
+					
+					List<Hospede> hospedes;
+					try {
+						hospedes = hospedeController.find(search);
+						for (Hospede hospede : hospedes) {
+						    Object[] linha = new Object[7];
+						    linha[0] = hospede.getId();
+						    linha[1] = hospede.getNome();
+						    linha[2] = hospede.getSobrenome();
+						    linha[3] = hospede.getDataNascimento();
+						    linha[4] = hospede.getNacionalidade();
+						    linha[5] = hospede.getTelefone();
+						    linha[6] = hospede.getReservaId();
+						    modeloHospedes.addRow(linha);
+						}
+					} catch (SQLException | IOException e1) {
+						e1.printStackTrace();
+					}
+					
+					
+					
+				}
+				
+				int selectedRowIndexRereservas = tbReservas.getSelectedRow();
+				
+				if(selectedRowIndexRereservas != -1) {
+					String id = modelo.getValueAt(selectedRowIndexRereservas, 0).toString();
+					Long newId = Long.parseLong(id);
+					
+					
+					try {
+						Reservas reservaId = new Reservas(newId);
+						reservasController.delete(reservaId);
+					} catch (SQLException | IOException e2) {
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
+					}
+					
+					modelo.setRowCount(0);
+					try {
+						List<Reservas> reservas = reservasController.find();
+						for (Reservas reserva : reservas) {
+						    Object[] linha = new Object[5];
+						    linha[0] = reserva.getId();
+						    linha[1] = reserva.getDiaChegada();
+						    linha[2] = reserva.getDiaSaida();
+						    linha[3] = reserva.getValor();
+						    linha[4] = reserva.getFormaPagamento();
+						    modelo.addRow(linha);
+						}
+					} catch (SQLException | IOException e1) {
+						
+						e1.printStackTrace();
+					}
+					
+					
+					
+					
+				}
+			}
+			
+		});
 	}
+	
 	
 	//Código que permite movimentar a janela pela tela seguindo a posição de "x" e "y"	
 	 private void headerMousePressed(java.awt.event.MouseEvent evt) {

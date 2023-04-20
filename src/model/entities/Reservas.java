@@ -26,6 +26,12 @@ public class Reservas {
 		this.formaPagamento = formaPagamento;
 	}
 
+	
+
+	public Reservas(Long id) {
+		super();
+		this.id = id;
+	}
 
 
 	public Long getId() {

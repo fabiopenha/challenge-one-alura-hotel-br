@@ -36,6 +36,7 @@ public class ReservasDAO {
 						reserva.setId(rst.getLong(1));
 					}
 				}
+				pstmt.close();
 			}
 		}catch(SQLException e) {
 			throw new RuntimeException(e);
@@ -58,6 +59,7 @@ public class ReservasDAO {
 					reservas.add(reserva);
 				}
 			}
+			pstmt.close();
 		}
 		return reservas;
 	}
@@ -75,6 +77,23 @@ public class ReservasDAO {
 				pstmt.setLong(6, reserva.getId());
 				
 				pstmt.executeUpdate();
+				pstmt.close();
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
+	
+	public void delete(Reservas reserva) throws SQLException {
+		String sql = "DELETE FROM reservas WHERE Id = ?";
+		
+		try(PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			try {
+				pstmt.setLong(1, reserva.getId());
+				 
+				pstmt.executeUpdate();
+				pstmt.close();
+				
 			} catch (SQLException e) {
 				throw new RuntimeException(e);
 			}
