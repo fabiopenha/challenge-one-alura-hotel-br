@@ -26,9 +26,11 @@ public class ReservasController {
 	
 	public List<Reservas> find() throws SQLException, IOException {
 		Connection connection = new ConnectionFactory().getConecction();
-		this.reservasDAO = new ReservasDAO(connection);
-		List<Reservas> reservas = reservasDAO.find();
-		
-		return reservas;
+		return (List<Reservas>) this.reservasDAO.find();
+	}
+	
+	public void update(Reservas reserva) throws SQLException, IOException {
+		Connection connection = new ConnectionFactory().getConecction();
+		this.reservasDAO.update(reserva);
 	}
 }

@@ -17,6 +17,8 @@ import javax.swing.JTextField;
 import javax.swing.ImageIcon;
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JTabbedPane;
 import java.awt.Toolkit;
@@ -27,7 +29,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @SuppressWarnings("serial")
@@ -45,6 +50,8 @@ public class Buscar extends JFrame {
 	
 	private ReservasController reservasController;
 	private HospedeController hospedeController;
+	
+	private SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
 
 	/**
 	 * Launch the application.
@@ -157,6 +164,7 @@ public class Buscar extends JFrame {
 		    linha[6] = hospede.getReservaId();
 		    modeloHospedes.addRow(linha);
 		}
+		
 		
 		
 		JLabel lblNewLabel_2 = new JLabel("");
@@ -300,6 +308,63 @@ public class Buscar extends JFrame {
 		btnEditar.setBounds(635, 508, 122, 35);
 		btnEditar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 		contentPane.add(btnEditar);
+		
+		btnEditar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				
+				
+				int selectedRowIndex = tbHospedes.getSelectedRow();
+				
+				
+				if(selectedRowIndex != -1) {
+					String id = modeloHospedes.getValueAt(selectedRowIndex, 0).toString();
+					String nome = modeloHospedes.getValueAt(selectedRowIndex, 1).toString();
+					String sobrenome = modeloHospedes.getValueAt(selectedRowIndex, 2).toString();
+					String dataNascimento = modeloHospedes.getValueAt(selectedRowIndex, 3).toString();
+					String nacionalidade = modeloHospedes.getValueAt(selectedRowIndex, 4).toString();
+					String telefone = modeloHospedes.getValueAt(selectedRowIndex, 5).toString();
+					String reservaId = modeloHospedes.getValueAt(selectedRowIndex, 6).toString();
+					
+					
+					System.out.println(id +" "+ nome + " "+sobrenome +" "+ dataNascimento +" "+ nacionalidade +" "+ telefone +" "+ reservaId);
+					
+					Long newId = Long.parseLong(id);
+					System.out.println("Novo ID: "+newId);
+				}
+				
+				int selectedRowIndexRereservas = tbReservas.getSelectedRow();
+				
+				if(selectedRowIndexRereservas != -1) {
+					String id = modelo.getValueAt(selectedRowIndexRereservas, 0).toString();
+					String diaChegada = modelo.getValueAt(selectedRowIndexRereservas, 1).toString();
+					String diaSaida = modelo.getValueAt(selectedRowIndexRereservas, 2).toString();
+					String valor = modelo.getValueAt(selectedRowIndexRereservas, 3).toString();
+					String formaPagamento = modelo.getValueAt(selectedRowIndexRereservas, 4).toString();
+					
+					Long newId = Long.parseLong(id);
+					try {
+						
+						if(!id.trim().isEmpty() && !diaChegada.trim().isEmpty() && !diaSaida.trim().isEmpty() && !valor.trim().isEmpty() && !formaPagamento.trim().isEmpty()) {
+							java.sql.Date.valueOf(diaChegada);
+							Reservas reserva = new Reservas(newId, java.sql.Date.valueOf(diaChegada), java.sql.Date.valueOf(diaSaida), valor, formaPagamento);
+							reservasController.update(reserva);
+							JOptionPane.showMessageDialog(contentPane, "Reserva atualizada!");
+							
+						} else {
+							JOptionPane.showMessageDialog(null, "Não é permitido atualizar campos vazios.!","Erro", JOptionPane.ERROR_MESSAGE);
+						}
+						
+					} catch ( SQLException | IOException e1) {
+						JOptionPane.showMessageDialog(null, "Ocorreu um erro ao atualizar!","Erro", JOptionPane.ERROR_MESSAGE);
+					}
+					
+				}
+				
+			}
+		});
+		
 		
 		JLabel lblEditar = new JLabel("EDITAR");
 		lblEditar.setHorizontalAlignment(SwingConstants.CENTER);

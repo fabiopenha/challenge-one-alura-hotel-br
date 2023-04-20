@@ -62,4 +62,23 @@ public class ReservasDAO {
 		return reservas;
 	}
 	
+	public void update(Reservas reserva) throws SQLException {
+		String sql = "UPDATE reservas SET Id = ?, DataEntrada = ?, DataSaida = ?, Valor = ?, FormaPagamento = ? WHERE Id = ?";
+		
+		try(PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			try {
+				pstmt.setLong(1, reserva.getId());
+				pstmt.setDate(2, reserva.getDiaChegada());
+				pstmt.setDate(3, reserva.getDiaSaida());
+				pstmt.setString(4, reserva.getValor());
+				pstmt.setString(5, reserva.getFormaPagamento());
+				pstmt.setLong(6, reserva.getId());
+				
+				pstmt.executeUpdate();
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
+	
 }
