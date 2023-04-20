@@ -409,6 +409,7 @@ public class Buscar extends JFrame {
 					try {
 						Hospede hospedeId = new Hospede(newId);
 						hospedeController.delete(hospedeId);
+						JOptionPane.showMessageDialog(contentPane, "Hóspede deletado!");
 					} catch (SQLException | IOException e2) {
 						// TODO Auto-generated catch block
 						e2.printStackTrace();
@@ -448,6 +449,7 @@ public class Buscar extends JFrame {
 					try {
 						Reservas reservaId = new Reservas(newId);
 						reservasController.delete(reservaId);
+						JOptionPane.showMessageDialog(contentPane, "Reserva deletada!");
 					} catch (SQLException | IOException e2) {
 						// TODO Auto-generated catch block
 						e2.printStackTrace();
