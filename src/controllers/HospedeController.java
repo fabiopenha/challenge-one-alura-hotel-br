@@ -33,4 +33,9 @@ public class HospedeController {
 		Connection connection = new ConnectionFactory().getConecction();
 		this.hospedeDAO.update(hospede);
 	}
+	
+	public void delete(Hospede hospede) throws SQLException, IOException {
+		Connection connection = new ConnectionFactory().getConecction();
+		this.hospedeDAO.delete(hospede);
+	}
 }

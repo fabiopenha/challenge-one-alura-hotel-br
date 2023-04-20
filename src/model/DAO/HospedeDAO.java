@@ -33,7 +33,7 @@ public class HospedeDAO {
 				pstmt.setLong(6, hospede.getReservaId());
 				
 				pstmt.executeUpdate();
-				
+				pstmt.close();
 			}
 		}catch(SQLException e) {
 			throw new RuntimeException(e);
@@ -60,6 +60,7 @@ public class HospedeDAO {
 					reservas.add(reserva);
 				}
 			}
+			pstmt.close();
 		}
 		return reservas;
 	}
@@ -80,6 +81,23 @@ public class HospedeDAO {
 				pstmt.setLong(8, hospede.getId());
 				
 				pstmt.executeUpdate();
+				pstmt.close();
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
+	
+	public void delete(Hospede hospede) throws SQLException {
+		String sql = "DELETE FROM hospedes WHERE Id = ?";
+		
+		try(PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			try {
+				pstmt.setLong(1, hospede.getId());
+				 
+				pstmt.executeUpdate();
+				pstmt.close();
+				
 			} catch (SQLException e) {
 				throw new RuntimeException(e);
 			}

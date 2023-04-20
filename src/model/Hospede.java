@@ -34,6 +34,13 @@ public class Hospede {
 		this.telefone = telefone;
 		this.reservaId = reservaId;
 	}
+	
+	
+
+	public Hospede(Long id) {
+		super();
+		this.id = id;
+	}
 
 	public Long getId() {
 		return id;

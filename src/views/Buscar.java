@@ -405,6 +405,15 @@ public class Buscar extends JFrame {
 					String id = modeloHospedes.getValueAt(selectedRowIndex, 0).toString();
 					Long newId = Long.parseLong(id);
 					
+					
+					try {
+						Hospede hospedeId = new Hospede(newId);
+						hospedeController.delete(hospedeId);
+					} catch (SQLException | IOException e2) {
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
+					}
+					
 					modeloHospedes.setRowCount(0);
 					
 					List<Hospede> hospedes;
