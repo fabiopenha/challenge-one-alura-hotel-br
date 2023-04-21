@@ -86,18 +86,13 @@ public class UsuarioDAO {
 	
 	
 	public void update(Usuario usuario) throws SQLException {
-		String sql = "UPDATE usuarios SET Id = ?, Nome = ?, Sobrenome = ?, DataNascimento = ?, Nacionalidade = ?, Telefone = ?, Id_Reserva = ? WHERE Id = ?";
+		String sql = "UPDATE usuarios SET login = ?, senha = ? WHERE login = ?";
 		
 		try(PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			try {
-				pstmt.setLong(1, usuario.getId());
-//				pstmt.setString(2, usuario.getNome());
-//				pstmt.setString(3, usuario.getSobrenome());
-//				pstmt.setDate(4, usuario.getDataNascimento());
-//				pstmt.setString(5, usuario.getNacionalidade());
-//				pstmt.setString(6, usuario.getTelefone());
-//				pstmt.setLong(7, usuario.getReservaId());
-//				pstmt.setLong(8, usuario.getId());
+				pstmt.setString(1, usuario.getLogin());
+				pstmt.setString(2, usuario.getSenha());
+				pstmt.setString(3, usuario.getLogin());
 				
 				pstmt.executeUpdate();
 				pstmt.close();

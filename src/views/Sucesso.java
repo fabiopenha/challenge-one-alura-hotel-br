@@ -12,6 +12,8 @@ import javax.swing.ImageIcon;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
@@ -68,8 +70,14 @@ public class Sucesso extends JDialog {
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						dispose();//serve para fechar a janela atual
-						MenuUsuario usuario = new MenuUsuario(); 
-						usuario.setVisible(true);
+						MenuUsuario usuario;
+						try {
+							usuario = new MenuUsuario();
+							usuario.setVisible(true);
+						} catch (SQLException | IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						} 
 					}
 				});
 				okButton.setActionCommand("OK");

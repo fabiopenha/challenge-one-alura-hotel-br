@@ -4,6 +4,7 @@ public class Usuario {
 	private Long id;
 	private String login;
 	private String senha;
+	private Boolean isAdmin;
 	
 	public Usuario(String login) {
 		super();
@@ -14,6 +15,14 @@ public class Usuario {
 		super();
 		this.login = login;
 		this.senha = senha;
+	}
+	
+	
+
+	public Usuario(String login, Boolean isAdmin) {
+		super();
+		this.login = login;
+		this.isAdmin = isAdmin;
 	}
 
 	public Long getId() {
@@ -38,6 +47,14 @@ public class Usuario {
 
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+
+	public Boolean getIsAdmin() {
+		return isAdmin;
+	}
+
+	public void setIsAdmin(Boolean isAdmin) {
+		this.isAdmin = isAdmin;
 	}
 	
 	

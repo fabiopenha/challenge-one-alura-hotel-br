@@ -4,7 +4,12 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import controllers.UsuarioController;
+import model.entities.HashPassword;
+
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.Color;
@@ -17,6 +22,7 @@ import java.awt.Toolkit;
 import javax.swing.SwingConstants;
 import java.awt.event.MouseMotionAdapter;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -30,6 +36,7 @@ public class MenuUsuario extends JFrame {
 	int xMouse, yMouse;
 	private JLabel labelExit;
 	private JLabel labelRegistro;
+	private UsuarioController usuarioController;
 
 	/**
 	 * Launch the application.
@@ -49,8 +56,11 @@ public class MenuUsuario extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * @throws IOException 
+	 * @throws SQLException 
 	 */
-	public MenuUsuario() {
+	public MenuUsuario() throws SQLException, IOException {
+		usuarioController = new UsuarioController();
 		setIconImage(Toolkit.getDefaultToolkit().getImage(MenuUsuario.class.getResource("/imagenes/aH-40px.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 944, 609);
@@ -167,6 +177,66 @@ public class MenuUsuario extends JFrame {
 		JSeparator separator = new JSeparator();
 		separator.setBounds(26, 219, 201, 2);
 		panelMenu.add(separator);
+		
+		JPanel btnAtualizar = new JPanel();
+		btnAtualizar.setLayout(null);
+		btnAtualizar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+		btnAtualizar.setBackground(new Color(12, 138, 199));
+		btnAtualizar.setBounds(0, 367, 257, 56);
+		panelMenu.add(btnAtualizar);
+		
+		
+		btnAtualizar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnAtualizar.setBackground(new Color(118, 187, 223));				
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnAtualizar.setBackground(new Color(12, 138, 199));	
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				String login = JOptionPane.showInputDialog("login");
+				String senha = JOptionPane.showInputDialog("senha");
+				
+				String hashPassword;
+				try {
+					hashPassword = new HashPassword().criptoPassword(senha);
+					
+					String senhaBD = usuarioController.findSenhaByLogin(login);
+				     
+				     Boolean comparePassword = new HashPassword().compareHash(senhaBD, hashPassword);
+				     
+				     if(comparePassword) {
+				    	 AtualizarUsuario atualizarUsuario = new AtualizarUsuario();
+				    	 atualizarUsuario.setVisible(true);
+				    	 dispose();
+				     } else {
+				    	 
+				    	 JOptionPane.showMessageDialog(null, "Usuario ou Senha não válidos");
+				    	 return;
+				     }
+					
+					System.out.println(login +" "+ senha);
+				} catch (NoSuchAlgorithmException | SQLException | IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			     
+			     
+				
+			}
+		});
+		
+		
+		JLabel lblAtualizar = new JLabel("Atualizar cadastro");
+		lblAtualizar.setIcon(new ImageIcon(MenuUsuario.class.getResource("/imagenes/icon-buscar.png")));
+		lblAtualizar.setHorizontalAlignment(SwingConstants.LEFT);
+		lblAtualizar.setForeground(Color.WHITE);
+		lblAtualizar.setFont(new Font("Roboto", Font.PLAIN, 18));
+		lblAtualizar.setBounds(30, 11, 200, 34);
+		btnAtualizar.add(lblAtualizar);
 		header.setLayout(null);
 		header.setBackground(Color.WHITE);
 		header.setBounds(0, 0, 944, 36);

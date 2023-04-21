@@ -190,9 +190,15 @@ public class Buscar extends JFrame {
 		btnAtras.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				MenuUsuario usuario = new MenuUsuario();
-				usuario.setVisible(true);
-				dispose();				
+				MenuUsuario usuario;
+				try {
+					usuario = new MenuUsuario();
+					usuario.setVisible(true);
+					dispose();				
+				} catch (SQLException | IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -220,9 +226,15 @@ public class Buscar extends JFrame {
 		btnexit.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				MenuUsuario usuario = new MenuUsuario();
-				usuario.setVisible(true);
-				dispose();
+				MenuUsuario usuario;
+				try {
+					usuario = new MenuUsuario();
+					usuario.setVisible(true);
+					dispose();
+				} catch (SQLException | IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) { // Quando o usuário passa o mouse sobre o botão, ele muda de cor
