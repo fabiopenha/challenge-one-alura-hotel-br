@@ -15,6 +15,8 @@ import javax.swing.SwingConstants;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.io.IOException;
+import java.sql.SQLException;
 
 @SuppressWarnings("serial")
 public class MenuPrincipal extends JFrame {
@@ -77,7 +79,7 @@ public class MenuPrincipal extends JFrame {
 		panel.add(panel_1);
 		panel_1.setLayout(null);
 		
-		JLabel lblCopyR = new JLabel("Desenvolvido por Fulanita de Tal © 2023");
+		JLabel lblCopyR = new JLabel("Desenvolvido por Fábio Penha © 2023");
 		lblCopyR.setBounds(315, 11, 301, 19);
 		lblCopyR.setForeground(new Color(240, 248, 255));
 		lblCopyR.setFont(new Font("Roboto", Font.PLAIN, 16));
@@ -135,7 +137,7 @@ public class MenuPrincipal extends JFrame {
 		
 		//Botón Login
 		JPanel btnLogin = new JPanel(); 
-		btnLogin.setBounds(754, 300, 83, 70);
+		btnLogin.setBounds(754, 282, 83, 70);
 		btnLogin.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -156,7 +158,7 @@ public class MenuPrincipal extends JFrame {
 		imageLogin.setIcon(new ImageIcon(MenuPrincipal.class.getResource("/imagenes/login.png")));
 		
 		JLabel lblTitulo = new JLabel("LOGIN");
-		lblTitulo.setBounds(754, 265, 83, 24);
+		lblTitulo.setBounds(754, 247, 83, 24);
 		lblTitulo.setBackground(SystemColor.window);
 		panel.add(lblTitulo);
 		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);

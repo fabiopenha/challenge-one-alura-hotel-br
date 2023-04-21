@@ -9,7 +9,7 @@ import javax.swing.table.DefaultTableModel;
 
 import controllers.HospedeController;
 import controllers.ReservasController;
-import model.Hospede;
+import model.entities.Hospede;
 import model.entities.Reservas;
 
 import javax.swing.JTable;
@@ -468,7 +468,7 @@ public class Buscar extends JFrame {
 						    modelo.addRow(linha);
 						}
 					} catch (SQLException | IOException e1) {
-						
+						JOptionPane.showMessageDialog(null, "Não é permitido deletar a reserva de um hóspede existente!","Erro", JOptionPane.ERROR_MESSAGE);
 						e1.printStackTrace();
 					}
 					

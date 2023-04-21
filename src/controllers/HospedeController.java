@@ -6,9 +6,9 @@ import java.sql.SQLException;
 import java.util.List;
 
 import model.ConnectionFactory;
-import model.Hospede;
 import model.DAO.HospedeDAO;
 import model.DAO.ReservasDAO;
+import model.entities.Hospede;
 import model.entities.Reservas;
 
 public class HospedeController {

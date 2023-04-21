@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.ConnectionFactory;
-import model.Hospede;
+import model.entities.Hospede;
 import model.entities.Reservas;
 
 public class HospedeDAO {

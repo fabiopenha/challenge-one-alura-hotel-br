@@ -17,6 +17,8 @@ import javax.swing.SwingConstants;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.io.IOException;
+import java.sql.SQLException;
 
 public class Login extends JFrame {
 
@@ -207,6 +209,43 @@ public class Login extends JFrame {
 		lblEntrar.setForeground(SystemColor.controlLtHighlight);
 		lblEntrar.setHorizontalAlignment(SwingConstants.CENTER);
 		lblEntrar.setFont(new Font("Roboto", Font.PLAIN, 18));
+		
+		JPanel btnCadastrar = new JPanel();
+		btnCadastrar.setLayout(null);
+		btnCadastrar.setBackground(SystemColor.textHighlight);
+		btnCadastrar.setBounds(195, 431, 147, 44);
+		panel.add(btnCadastrar);
+		
+		btnCadastrar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnCadastrar.setBackground(new Color(0, 156, 223));
+			}
+		
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnCadastrar.setBackground(SystemColor.textHighlight);
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					RegistroUsuario registroUsuario = new RegistroUsuario();
+					registroUsuario.setVisible(true);
+					dispose();
+				} catch (SQLException | IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		
+		JLabel lbCadastrar = new JLabel("CADASTRAR");
+		lbCadastrar.setHorizontalAlignment(SwingConstants.CENTER);
+		lbCadastrar.setForeground(Color.WHITE);
+		lbCadastrar.setFont(new Font("Roboto", Font.PLAIN, 18));
+		lbCadastrar.setBounds(0, 0, 147, 44);
+		btnCadastrar.add(lbCadastrar);
+		
 		
 		JLabel logo = new JLabel("");
 		logo.setHorizontalAlignment(SwingConstants.CENTER);

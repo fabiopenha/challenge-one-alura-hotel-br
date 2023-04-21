@@ -9,7 +9,7 @@ import java.awt.Color;
 import com.toedter.calendar.JDateChooser;
 
 import controllers.HospedeController;
-import model.Hospede;
+import model.entities.Hospede;
 
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;

@@ -8,6 +8,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import model.ConnectionFactory;
 import model.entities.Reservas;
 
@@ -95,6 +97,7 @@ public class ReservasDAO {
 				pstmt.close();
 				
 			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(null, "Não é permitido deletar a reserva de um hóspede existente!","Erro", JOptionPane.ERROR_MESSAGE);
 				throw new RuntimeException(e);
 			}
 		}
