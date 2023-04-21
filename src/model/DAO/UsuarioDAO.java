@@ -65,12 +65,12 @@ public class UsuarioDAO {
 		return reservas;
 	}
 	
-	public String findPassByLogin(Usuario usuario) throws SQLException {
-		String sql = "SELECT senha FROM usuario WHERE login = ?";
+	public String findPassByLogin(String usuario) throws SQLException {
+		String sql = "SELECT senha FROM usuarios WHERE login = ?";
 		String senha=null;
 		try(PreparedStatement pstmt = connection.prepareStatement(sql)){
 			try {
-				pstmt.setString(1, usuario.getLogin());
+				pstmt.setString(1, usuario);
 				
 				ResultSet rst = pstmt.executeQuery();
 				if (rst.next()) {

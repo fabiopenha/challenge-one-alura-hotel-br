@@ -274,7 +274,7 @@ public class RegistroUsuario extends JFrame {
 					loginView.setVisible(true);
 					dispose();
 					
-				} catch (NoSuchAlgorithmException e1) {
+				} catch (NoSuchAlgorithmException | SQLException | IOException e1) {
 					e1.printStackTrace();
 				}
 			}

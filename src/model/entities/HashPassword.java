@@ -20,10 +20,12 @@ public class HashPassword {
 		return hash;
 	}
 	
-	public static Boolean compareHash(String senha, String hash) {
-        if (hash.equals(senha)) {
+	public static Boolean compareHash(String senhaBD, String hash) {
+        if (hash.equals(senhaBD)) {
             return true;
+        } else {
+        	return false;
         }
-        return true;
+        
 	}
 }

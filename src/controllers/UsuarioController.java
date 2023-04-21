@@ -31,7 +31,7 @@ public class UsuarioController {
 		return (List<Hospede>) this.usuarioDAO.find(search);
 	}
 	
-	public String findSenhaByLogin(Usuario usuario) throws SQLException, IOException {
+	public String findSenhaByLogin(String usuario) throws SQLException, IOException {
 		Connection connection = new ConnectionFactory().getConecction();
 		return this.usuarioDAO.findPassByLogin(usuario);
 	}

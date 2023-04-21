@@ -4,6 +4,10 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import controllers.UsuarioController;
+import model.entities.HashPassword;
+
 import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -18,6 +22,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
 public class Login extends JFrame {
@@ -31,6 +36,8 @@ public class Login extends JFrame {
 	private JPasswordField txtSenha;
 	int xMouse, yMouse;
 	private JLabel labelExit;
+	
+	private UsuarioController usuarioController;
 
 	/**
 	 * Launch the application.
@@ -50,8 +57,10 @@ public class Login extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * @throws IOException 
+	 * @throws SQLException 
 	 */
-	public Login() {
+	public Login() throws SQLException, IOException {
 		setResizable(false);
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -61,6 +70,7 @@ public class Login extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		setLocationRelativeTo(null);
+		usuarioController = new UsuarioController();
 		
 		
 		JPanel panel = new JPanel();
@@ -194,7 +204,12 @@ public class Login extends JFrame {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Login();
+				try {
+					Login();
+				} catch (NoSuchAlgorithmException | SQLException | IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		btnLogin.setBackground(SystemColor.textHighlight);
@@ -273,19 +288,35 @@ public class Login extends JFrame {
 		header.setLayout(null);
 	}
 	
-	private void Login() {
-		 String Usuario= "admin";
-	     String Senha="admin";
-
-	        String senhaa=new String (txtSenha.getPassword());
-
-	        if(txtUsuario.getText().equals(Usuario) && senhaa.equals(Senha)){
-	            MenuUsuario menu = new MenuUsuario();
-	            menu.setVisible(true);
-	            dispose();	 
-	        }else {
-	            JOptionPane.showMessageDialog(this, "Usuario ou Senha não válidos");
-	        }
+	private void Login() throws NoSuchAlgorithmException, SQLException, IOException {
+		 String usuario= txtUsuario.getText();
+	     String senha= new String (txtSenha.getPassword());
+	     
+	     String hashPassword = new HashPassword().criptoPassword(senha);
+	     
+	     String senhaBD = usuarioController.findSenhaByLogin(usuario);
+	     
+	     Boolean comparePassword = new HashPassword().compareHash(senhaBD, hashPassword);
+	     
+	     if(comparePassword) {
+	    	 MenuUsuario menuUsuario = new MenuUsuario();
+	    	 menuUsuario.setVisible(true);
+	    	 dispose();
+	     } else {
+	    	 
+	    	 JOptionPane.showMessageDialog(this, "Usuario ou Senha não válidos");
+	    	 return;
+	     }
+	     
+	     System.out.println(senhaBD);
+	 
+        if(null != null){
+            MenuUsuario menu = new MenuUsuario();
+            menu.setVisible(true);
+            dispose();	 
+        }else {
+            //JOptionPane.showMessageDialog(this, "Usuario ou Senha não válidos");
+        }
 	} 
 	
 	//Código que permite movimentar a janela pela tela seguindo a posição de "x" e "y"
