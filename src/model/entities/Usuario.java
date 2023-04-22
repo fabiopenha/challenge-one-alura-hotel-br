@@ -3,6 +3,7 @@ package model.entities;
 public class Usuario {
 	private Long id;
 	private String login;
+	private String currentLogin;
 	private String senha;
 	private Boolean isAdmin;
 	
@@ -17,7 +18,12 @@ public class Usuario {
 		this.senha = senha;
 	}
 	
-	
+	public Usuario(String login,String currentLogin, String senha) {
+		super();
+		this.login = login;
+		this.currentLogin = currentLogin;
+		this.senha = senha;
+	}
 
 	public Usuario(String login, Boolean isAdmin) {
 		super();
@@ -39,6 +45,14 @@ public class Usuario {
 
 	public void setLogin(String login) {
 		this.login = login;
+	}
+	
+	public String getCurrentLogin() {
+		return currentLogin;
+	}
+	
+	public void setCurrentLogin(String currentLogin) {
+		this.currentLogin = currentLogin;
 	}
 
 	public String getSenha() {

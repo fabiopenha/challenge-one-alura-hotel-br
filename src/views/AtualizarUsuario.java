@@ -51,6 +51,7 @@ public class AtualizarUsuario extends JFrame {
 	private JLabel labelAtras;
 	
 	private UsuarioController usuarioController;
+	private JTextField txtCurrentLogin;
 
 	/**
 	 * Launch the application.
@@ -98,15 +99,37 @@ public class AtualizarUsuario extends JFrame {
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
+		JSeparator separator_1_1_1 = new JSeparator();
+		separator_1_1_1.setForeground(SystemColor.textHighlight);
+		separator_1_1_1.setBackground(SystemColor.textHighlight);
+		separator_1_1_1.setBounds(66, 214, 289, 11);
+		panel.add(separator_1_1_1);
+		
+		txtCurrentLogin = new JTextField();
+		txtCurrentLogin.setBackground(SystemColor.text);
+		txtCurrentLogin.setHorizontalAlignment(SwingConstants.LEFT);
+		txtCurrentLogin.setForeground(Color.BLACK);
+		txtCurrentLogin.setBounds(66, 182, 289, 33);
+		txtCurrentLogin.setFont(new Font("Roboto Black", Font.BOLD, 17));
+		txtCurrentLogin.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+		panel.add(txtCurrentLogin);
+		txtCurrentLogin.setColumns(10);
+		
+		JLabel lblCheckOut_1 = new JLabel("LOGIN ATUAL");
+		lblCheckOut_1.setForeground(SystemColor.textInactiveText);
+		lblCheckOut_1.setFont(new Font("Roboto Black", Font.PLAIN, 18));
+		lblCheckOut_1.setBounds(66, 157, 187, 14);
+		panel.add(lblCheckOut_1);
+		
 		JSeparator separator_1_1 = new JSeparator();
 		separator_1_1.setForeground(SystemColor.textHighlight);
-		separator_1_1.setBounds(66, 247, 289, 11);
+		separator_1_1.setBounds(66, 322, 289, 11);
 		separator_1_1.setBackground(SystemColor.textHighlight);
 		panel.add(separator_1_1);
 		
-		JLabel lblCheckOut = new JLabel("LOGIN");
+		JLabel lblCheckOut = new JLabel("NOVO LOGIN");
 		lblCheckOut.setForeground(SystemColor.textInactiveText);
-		lblCheckOut.setBounds(66, 187, 187, 14);
+		lblCheckOut.setBounds(66, 262, 187, 14);
 		lblCheckOut.setFont(new Font("Roboto Black", Font.PLAIN, 18));
 		panel.add(lblCheckOut);
 		
@@ -114,7 +137,7 @@ public class AtualizarUsuario extends JFrame {
 		txtLogin.setBackground(SystemColor.text);
 		txtLogin.setHorizontalAlignment(SwingConstants.LEFT);
 		txtLogin.setForeground(Color.BLACK);
-		txtLogin.setBounds(66, 212, 289, 33);
+		txtLogin.setBounds(66, 287, 289, 33);
 		txtLogin.setFont(new Font("Roboto Black", Font.BOLD, 17));
 		txtLogin.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 		panel.add(txtLogin);
@@ -124,15 +147,15 @@ public class AtualizarUsuario extends JFrame {
 		txtSenha.setBackground(SystemColor.text);
 		txtSenha.setHorizontalAlignment(SwingConstants.LEFT);
 		txtSenha.setForeground(Color.BLACK);
-		txtSenha.setBounds(66, 294, 289, 33);
+		txtSenha.setBounds(66, 381, 289, 33);
 		txtSenha.setFont(new Font("Roboto Black", Font.BOLD, 17));
 		txtSenha.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 		panel.add(txtSenha);
 		txtSenha.setColumns(10);
 		
-		JLabel lblValor = new JLabel("SENHA");
+		JLabel lblValor = new JLabel("NOVA SENHA");
 		lblValor.setForeground(SystemColor.textInactiveText);
-		lblValor.setBounds(66, 269, 196, 14);
+		lblValor.setBounds(66, 356, 196, 14);
 		lblValor.setFont(new Font("Roboto Black", Font.PLAIN, 18));
 		panel.add(lblValor);
 		
@@ -235,14 +258,14 @@ public class AtualizarUsuario extends JFrame {
 		
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setForeground(SystemColor.textHighlight);
-		separator_1.setBounds(66, 328, 289, 2);
+		separator_1.setBounds(66, 415, 289, 2);
 		separator_1.setBackground(SystemColor.textHighlight);
 		panel.add(separator_1);
 		
 		JPanel btnCadastrar = new JPanel();
 		btnCadastrar.setLayout(null);
 		btnCadastrar.setBackground(SystemColor.textHighlight);
-		btnCadastrar.setBounds(66, 370, 289, 35);
+		btnCadastrar.setBounds(66, 457, 289, 35);
 		panel.add(btnCadastrar);
 		btnCadastrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 		
@@ -260,11 +283,12 @@ public class AtualizarUsuario extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				String hashSenha;
 				try {
+					String currentLogin = txtCurrentLogin.getText();
 					String login = txtLogin.getText();
 					String senha = txtSenha.getText();
 					hashSenha = new HashPassword().criptoPassword(senha);
 					
-					Usuario usuario = new Usuario(login, hashSenha);
+					Usuario usuario = new Usuario(login,currentLogin, hashSenha);
 					
 					usuarioController.update(usuario);
 					
@@ -280,12 +304,13 @@ public class AtualizarUsuario extends JFrame {
 			}
 		});
 		
-		JLabel lblSeguinte = new JLabel("CADASTRAR");
+		JLabel lblSeguinte = new JLabel("ATUALIZAR");
 		lblSeguinte.setBounds(0, 0, 289, 35);
 		btnCadastrar.add(lblSeguinte);
 		lblSeguinte.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSeguinte.setForeground(Color.WHITE);
 		lblSeguinte.setFont(new Font("Roboto", Font.PLAIN, 18));
+		
 	}
 	
 	private void salvarReserva() throws SQLException, IOException {

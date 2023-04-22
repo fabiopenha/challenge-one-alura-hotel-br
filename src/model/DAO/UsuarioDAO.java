@@ -84,6 +84,25 @@ public class UsuarioDAO {
 		return senha;
 	}
 	
+	public String getUserId(String usuario) throws SQLException {
+		String sql = "SELECT senha FROM usuarios WHERE login = ?";
+		String senha=null;
+		try(PreparedStatement pstmt = connection.prepareStatement(sql)){
+			try {
+				pstmt.setString(1, usuario);
+				
+				ResultSet rst = pstmt.executeQuery();
+				if (rst.next()) {
+			        senha = rst.getString("senha");
+			    }
+				pstmt.close();
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		}
+		return senha;
+	}
+	
 	
 	public void update(Usuario usuario) throws SQLException {
 		String sql = "UPDATE usuarios SET login = ?, senha = ? WHERE login = ?";
@@ -92,7 +111,7 @@ public class UsuarioDAO {
 			try {
 				pstmt.setString(1, usuario.getLogin());
 				pstmt.setString(2, usuario.getSenha());
-				pstmt.setString(3, usuario.getLogin());
+				pstmt.setString(3, usuario.getCurrentLogin());
 				
 				pstmt.executeUpdate();
 				pstmt.close();

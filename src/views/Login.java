@@ -307,8 +307,6 @@ public class Login extends JFrame {
 	    	 JOptionPane.showMessageDialog(this, "Usuario ou Senha não válidos");
 	    	 return;
 	     }
-	     
-	     System.out.println(senhaBD);
 	 
         if(null != null){
             MenuUsuario menu = new MenuUsuario();
