@@ -65,6 +65,24 @@ public class HospedeDAO {
 		return reservas;
 	}
 	
+	public Long findHospedeByReservaId(Long reservaId) throws SQLException {
+		String sql = "SELECT Id FROM hotel_alura.hospedes WHERE Id_Reserva = "+reservaId;
+		Long id=null;
+		try(PreparedStatement pstmt = connection.prepareStatement(sql)){
+			try {
+				
+				ResultSet rst = pstmt.executeQuery();
+				if (rst.next()) {
+			        id = rst.getLong("Id");
+			    }
+				pstmt.close();
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		}
+		return id;
+	}
+	
 	
 	public void update(Hospede hospede) throws SQLException {
 		String sql = "UPDATE hospedes SET Id = ?, Nome = ?, Sobrenome = ?, DataNascimento = ?, Nacionalidade = ?, Telefone = ?, Id_Reserva = ? WHERE Id = ?";
@@ -94,6 +112,22 @@ public class HospedeDAO {
 		try(PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			try {
 				pstmt.setLong(1, hospede.getId());
+				 
+				pstmt.executeUpdate();
+				pstmt.close();
+				
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
+	
+	public void deleteById(Long id) throws SQLException {
+		String sql = "DELETE FROM hospedes WHERE Id = ?";
+		
+		try(PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			try {
+				pstmt.setLong(1, id);
 				 
 				pstmt.executeUpdate();
 				pstmt.close();

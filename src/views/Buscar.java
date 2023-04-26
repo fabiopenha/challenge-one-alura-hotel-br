@@ -460,7 +460,33 @@ public class Buscar extends JFrame {
 					
 					try {
 						Reservas reservaId = new Reservas(newId);
+						
+						Long hospedeId = hospedeController.findHospedeByReservaId(newId);
+						
+						hospedeController.deleteById(hospedeId);
+						
 						reservasController.delete(reservaId);
+						
+						//atualiza a lista de hóspedes
+						modeloHospedes.setRowCount(0);
+						
+						List<Hospede> hospedes;
+						try {
+							hospedes = hospedeController.find(search);
+							for (Hospede hospede : hospedes) {
+							    Object[] linha = new Object[7];
+							    linha[0] = hospede.getId();
+							    linha[1] = hospede.getNome();
+							    linha[2] = hospede.getSobrenome();
+							    linha[3] = hospede.getDataNascimento();
+							    linha[4] = hospede.getNacionalidade();
+							    linha[5] = hospede.getTelefone();
+							    linha[6] = hospede.getReservaId();
+							    modeloHospedes.addRow(linha);
+							}
+						} catch (SQLException | IOException e1) {
+							e1.printStackTrace();
+						}
 						JOptionPane.showMessageDialog(contentPane, "Reserva deletada!");
 					} catch (SQLException | IOException e2) {
 						// TODO Auto-generated catch block

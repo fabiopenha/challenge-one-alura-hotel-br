@@ -103,4 +103,21 @@ public class ReservasDAO {
 		}
 	}
 	
+	public void deleteById(Long id) throws SQLException {
+		String sql = "DELETE FROM reservas WHERE Id = ?";
+		
+		try(PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			try {
+				pstmt.setLong(1, id);
+				 
+				pstmt.executeUpdate();
+				pstmt.close();
+				
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(null, "Não é permitido deletar a reserva de um hóspede existente!","Erro", JOptionPane.ERROR_MESSAGE);
+				throw new RuntimeException(e);
+			}
+		}
+	}
+	
 }

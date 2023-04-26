@@ -29,6 +29,11 @@ public class HospedeController {
 		return (List<Hospede>) this.hospedeDAO.find(search);
 	}
 	
+	public Long findHospedeByReservaId(Long id) throws SQLException, IOException {
+		Connection connection = new ConnectionFactory().getConecction();
+		return this.hospedeDAO.findHospedeByReservaId(id);
+	}
+	
 	public void update(Hospede hospede) throws SQLException, IOException {
 		Connection connection = new ConnectionFactory().getConecction();
 		this.hospedeDAO.update(hospede);
@@ -37,5 +42,10 @@ public class HospedeController {
 	public void delete(Hospede hospede) throws SQLException, IOException {
 		Connection connection = new ConnectionFactory().getConecction();
 		this.hospedeDAO.delete(hospede);
+	}
+	
+	public void deleteById(Long id) throws SQLException, IOException {
+		Connection connection = new ConnectionFactory().getConecction();
+		this.hospedeDAO.deleteById(id);
 	}
 }
